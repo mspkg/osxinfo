@@ -26,10 +26,9 @@
 #define C0  "\x1B[0m"    /* Reset  */
 #define C1  "\x1B[0;32m" /* Green  */
 #define C2  "\x1B[0;33m" /* Yellow */
-#define C3  "\x1B[1;31m" /* RED    */
-#define C4  "\x1B[0;31m" /* Red    */
-#define C5  "\x1B[0;35m" /* Purple */
-#define C6  "\x1B[0;36m" /* Blue   */
+#define C3  "\x1B[0;31m" /* Red    */
+#define C4  "\x1B[0;35m" /* Purple */
+#define C5  "\x1B[0;36m" /* Blue   */
 #define RED C3
 #define NOR C0
 
@@ -75,23 +74,25 @@ static void print_apple(void) {
 	time_t now;
 	time(&now);
 
-	printf("                                \n");
-	printf(C1"                :++++.        "); get_env(USER);
-	printf(C1"               /+++/.         "); get_sysctl(MODEL);
-	printf(C1"       .:-::- .+/:-``.::-     "); get_sysctl(MEM);
-	printf(C2"    .:/++++++/::::/++++++/:`  "); get_sysctl(OSTYPE);
-	printf(C2"  .:///////////////////////:` "); get_sysctl(OSREL);
-	printf(C2"  ////////////////////////`   "); mem();
-	printf(C3" -+++++++++++++++++++++++`    "); get_env(SHELL);
-	printf(C3" /++++++++++++++++++++++/     "); get_env(TERM);
-	printf(C4" /sssssssssssssssssssssss.    "); get_sysctl(CPU);
-	printf(C4" :ssssssssssssssssssssssss-   "); gpu();
-	printf(C5"  osssssssssssssssssssssssso/ "); disk();
-	printf(C5"  `syyyyyyyyyyyyyyyyyyyyyyyy+ "); get_pkg_count();
-	printf(C5"   `ossssssssssssssssssssss/  "); uptime(&now);
-	printf(C6"     :ooooooooooooooooooo+.   "); curtime();
-	printf(C6"      `:+oo+/:-..-:/+o+/-     \n"C0);
-	printf("                                \n");
+	printf("                                 \n");
+	printf(C1"                  ###          \n");
+	printf(C1"                #####          \n");
+	printf(C1"               #####           "); get_env(USER);
+	printf(C1"               ####            "); get_sysctl(MODEL);
+	printf(C1"       ########   ########     "); get_sysctl(MEM);
+	printf(C2"    ########################   "); get_sysctl(OSTYPE);
+	printf(C2"   ##########################  "); get_sysctl(OSREL);
+	printf(C2"  ########################     "); mem();
+	printf(C3" #######################       "); get_env(SHELL);
+	printf(C3" #######################       "); get_env(TERM);
+	printf(C3" #######################       "); get_sysctl(CPU);
+	printf(C4" #########################     "); gpu();
+	printf(C4"  ##########################   "); disk();
+	printf(C4"   ########################    "); get_pkg_count();
+	printf(C5"    ######################     "); uptime(&now);
+	printf(C5"     ####################      "); curtime();
+	printf(C5"       #######   ######        \n"C0);
+	printf("                                 \n");
 }
 
 static void curtime(void) {
