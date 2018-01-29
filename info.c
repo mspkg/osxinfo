@@ -80,16 +80,16 @@ static void print_apple(void) {
 	time(&now);
 
 	printf("                                 \n");
-	printf(C1"                  ###          "); get_env(USER);
-	printf(C1"                #####          "); host();
-	printf(C1"               #####           "); get_sysctl(MODEL);
-	printf(C1"               ####            "); get_sysctl(MEM);
+	printf(C1"                  ###          \n"); 
+	printf(C1"                #####          "); get_env(USER);
+	printf(C1"               #####           "); host();
+	printf(C1"               ####            "); get_sysctl(MODEL);
 	printf(C1"       ########   ########     "); os();
 	printf(C2"    ########################   "); kernel();
-	printf(C2"   ##########################  "); mem();
-	printf(C2"  ########################     "); get_env(SHELL);
-	printf(C3" #######################       "); get_env(TERM);
+	printf(C2"   ##########################  "); get_env(SHELL);
+	printf(C2"  ########################     "); get_env(TERM);
 	printf(C3" #######################       "); cpu();
+	printf(C3" #######################       "); get_sysctl(MEM);
 	printf(C3" #######################       "); gpu();
 	printf(C4" #########################     "); disk();
 	printf(C4"  ##########################   "); battery();
@@ -417,20 +417,19 @@ int main(int argc, char **argv) {
 
 		get_env(USER);
 		host();
-		curtime();
 		get_sysctl(MODEL);
-		cpu();
 		os();
 		kernel();
-		disk();
-		mem();
 		get_env(SHELL);
 		get_env(TERM);
+		cpu();
 		get_sysctl(MEM);
 		gpu();
+		disk();
+		battery();
 		get_pkg_count();
 		uptime(&now);
-		battery();
+		curtime();
 	}
 
 	return EXIT_SUCCESS;
