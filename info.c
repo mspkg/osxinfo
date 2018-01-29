@@ -72,6 +72,7 @@ static void curtime(void);
 static void host(void);
 static void kernel(void);
 static void os(void);
+static void cpu(void);
 
 static void print_apple(void) {
 	time_t now;
@@ -88,7 +89,7 @@ static void print_apple(void) {
 	printf(C2"  ########################     "); mem();
 	printf(C3" #######################       "); get_env(SHELL);
 	printf(C3" #######################       "); get_env(TERM);
-	printf(C3" #######################       "); get_sysctl(CPU);
+	printf(C3" #######################       "); cpu();
 	printf(C4" #########################     "); gpu();
 	printf(C4"  ##########################   "); disk();
 	printf(C4"   ########################    "); get_pkg_count();
@@ -96,6 +97,18 @@ static void print_apple(void) {
 	printf(C5"     ####################      "); curtime();
 	printf(C5"       #######   ######        \n"C0);
 	printf("                                 \n");
+}
+
+static void cpu(void) {
+	FILE *fp;
+	int status;
+	char path[PATH_MAX];
+	fp = popen("sysctl -n machdep.cpu.brand_string | awk '$1=$1' | sed 's/([A-Z]\\{1,2\\})//g'", "r");
+
+	while (fgets(path, PATH_MAX, fp) != NULL)
+		printf(RED"CPU:      : "NOR"%s", path);
+
+	status = pclose(fp);
 }
 
 static void os(void) {
@@ -393,7 +406,7 @@ int main(int argc, char **argv) {
 		host();
 		curtime();
 		get_sysctl(MODEL);
-		get_sysctl(CPU);
+		cpu();
 		os();
 		kernel();
 		disk();
