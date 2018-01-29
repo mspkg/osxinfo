@@ -75,6 +75,7 @@ static void print_apple(void) {
 	time_t now;
 	time(&now);
 
+	printf("                                \n");
 	printf(C1"                :++++.        "); get_env(USER);
 	printf(C1"               /+++/.         "); get_sysctl(MODEL);
 	printf(C1"       .:-::- .+/:-``.::-     "); get_sysctl(MEM);
@@ -90,6 +91,7 @@ static void print_apple(void) {
 	printf(C5"   `ossssssssssssssssssssss/  "); uptime(&now);
 	printf(C6"     :ooooooooooooooooooo+.   "); curtime();
 	printf(C6"      `:+oo+/:-..-:/+o+/-     \n"C0);
+	printf("                                \n");
 }
 
 static void curtime(void) {
