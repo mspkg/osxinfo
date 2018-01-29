@@ -69,6 +69,7 @@ static void gpu(void);
 static void mem(void);
 static void print_apple(void);
 static void curtime(void);
+static void host(void);
 
 static void print_apple(void) {
 	time_t now;
@@ -76,8 +77,8 @@ static void print_apple(void) {
 
 	printf("                                 \n");
 	printf(C1"                  ###          \n");
-	printf(C1"                #####          \n");
-	printf(C1"               #####           "); get_env(USER);
+	printf(C1"                #####          "); get_env(USER);
+	printf(C1"               #####           "); host();
 	printf(C1"               ####            "); get_sysctl(MODEL);
 	printf(C1"       ########   ########     "); get_sysctl(MEM);
 	printf(C2"    ########################   "); get_sysctl(OSTYPE);
@@ -93,6 +94,13 @@ static void print_apple(void) {
 	printf(C5"     ####################      "); curtime();
 	printf(C5"       #######   ######        \n"C0);
 	printf("                                 \n");
+}
+
+static void host(void) {
+    char hostname[1024];
+    gethostname(hostname, 1024);
+
+    printf(RED"Hostname  : "NOR"%s\n", hostname);
 }
 
 static void curtime(void) {
@@ -356,6 +364,7 @@ int main(int argc, char **argv) {
 		time(&now);
 
 		get_env(USER);
+		host();
 		curtime();
 		get_sysctl(MODEL);
 		get_sysctl(CPU);
