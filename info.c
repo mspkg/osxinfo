@@ -73,30 +73,43 @@ static void host(void);
 static void kernel(void);
 static void os(void);
 static void cpu(void);
+static void battery(void);
 
 static void print_apple(void) {
 	time_t now;
 	time(&now);
 
 	printf("                                 \n");
-	printf(C1"                  ###          \n");
-	printf(C1"                #####          "); get_env(USER);
-	printf(C1"               #####           "); host();
-	printf(C1"               ####            "); get_sysctl(MODEL);
-	printf(C1"       ########   ########     "); get_sysctl(MEM);
-	printf(C2"    ########################   "); os();
-	printf(C2"   ##########################  "); kernel();
-	printf(C2"  ########################     "); mem();
-	printf(C3" #######################       "); get_env(SHELL);
+	printf(C1"                  ###          "); get_env(USER);
+	printf(C1"                #####          "); host();
+	printf(C1"               #####           "); get_sysctl(MODEL);
+	printf(C1"               ####            "); get_sysctl(MEM);
+	printf(C1"       ########   ########     "); os();
+	printf(C2"    ########################   "); kernel();
+	printf(C2"   ##########################  "); mem();
+	printf(C2"  ########################     "); get_env(SHELL);
 	printf(C3" #######################       "); get_env(TERM);
 	printf(C3" #######################       "); cpu();
-	printf(C4" #########################     "); gpu();
-	printf(C4"  ##########################   "); disk();
+	printf(C3" #######################       "); gpu();
+	printf(C4" #########################     "); disk();
+	printf(C4"  ##########################   "); battery();
 	printf(C4"   ########################    "); get_pkg_count();
 	printf(C5"    ######################     "); uptime(&now);
 	printf(C5"     ####################      "); curtime();
 	printf(C5"       #######   ######        \n"C0);
 	printf("                                 \n");
+}
+
+static void battery(void) {
+	FILE *fp;
+	int status;
+	char path[PATH_MAX];
+	fp = popen("pmset -g batt | grep -o '[0-9]\\+%'", "r");
+
+	while (fgets(path, PATH_MAX, fp) != NULL)
+		printf(RED"Battery   : "NOR"%s", path);
+
+	status = pclose(fp);
 }
 
 static void cpu(void) {
@@ -417,6 +430,7 @@ int main(int argc, char **argv) {
 		gpu();
 		get_pkg_count();
 		uptime(&now);
+		battery();
 	}
 
 	return EXIT_SUCCESS;
