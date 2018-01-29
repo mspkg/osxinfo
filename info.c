@@ -70,6 +70,7 @@ static void mem(void);
 static void print_apple(void);
 static void curtime(void);
 static void host(void);
+static void kernel(void);
 
 static void print_apple(void) {
 	time_t now;
@@ -81,19 +82,31 @@ static void print_apple(void) {
 	printf(C1"               #####           "); host();
 	printf(C1"               ####            "); get_sysctl(MODEL);
 	printf(C1"       ########   ########     "); get_sysctl(MEM);
-	printf(C2"    ########################   "); get_sysctl(OSTYPE);
-	printf(C2"   ##########################  "); get_sysctl(OSREL);
-	printf(C2"  ########################     "); mem();
-	printf(C3" #######################       "); get_env(SHELL);
+	printf(C2"    ########################   "); kernel();
+	printf(C2"   ##########################  "); mem();
+	printf(C2"  ########################     "); get_env(SHELL);
 	printf(C3" #######################       "); get_env(TERM);
 	printf(C3" #######################       "); get_sysctl(CPU);
-	printf(C4" #########################     "); gpu();
-	printf(C4"  ##########################   "); disk();
-	printf(C4"   ########################    "); get_pkg_count();
-	printf(C5"    ######################     "); uptime(&now);
-	printf(C5"     ####################      "); curtime();
+	printf(C3" #######################       "); gpu();
+	printf(C4" #########################     "); disk();
+	printf(C4"  ##########################   "); get_pkg_count();
+	printf(C4"   ########################    "); uptime(&now);
+	printf(C5"    ######################     "); curtime();
+	printf(C5"     ####################      \n"); 
 	printf(C5"       #######   ######        \n"C0);
 	printf("                                 \n");
+}
+
+static void kernel(void) {
+	FILE *fp;
+	int status;
+	char path[PATH_MAX];
+	fp = popen("uname -rms", "r");
+
+	while (fgets(path, PATH_MAX, fp) != NULL)
+		printf(RED"Kernel    : "NOR"%s", path);
+
+	status = pclose(fp);
 }
 
 static void host(void) {
@@ -368,8 +381,7 @@ int main(int argc, char **argv) {
 		curtime();
 		get_sysctl(MODEL);
 		get_sysctl(CPU);
-		get_sysctl(OSTYPE);
-		get_sysctl(OSREL);
+		kernel();
 		disk();
 		mem();
 		get_env(SHELL);
