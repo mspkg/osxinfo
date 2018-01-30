@@ -71,6 +71,7 @@ static void print_apple(void);
 static void curtime(void);
 static void host(void);
 static void kernel(void);
+static void os(void);
 
 static void print_apple(void) {
 	time_t now;
@@ -82,19 +83,31 @@ static void print_apple(void) {
 	printf(C1"               #####           "); host();
 	printf(C1"               ####            "); get_sysctl(MODEL);
 	printf(C1"       ########   ########     "); get_sysctl(MEM);
-	printf(C2"    ########################   "); kernel();
-	printf(C2"   ##########################  "); mem();
-	printf(C2"  ########################     "); get_env(SHELL);
+	printf(C2"    ########################   "); os();
+	printf(C2"   ##########################  "); kernel();
+	printf(C2"  ########################     "); mem();
+	printf(C3" #######################       "); get_env(SHELL);
 	printf(C3" #######################       "); get_env(TERM);
 	printf(C3" #######################       "); get_sysctl(CPU);
-	printf(C3" #######################       "); gpu();
-	printf(C4" #########################     "); disk();
-	printf(C4"  ##########################   "); get_pkg_count();
-	printf(C4"   ########################    "); uptime(&now);
-	printf(C5"    ######################     "); curtime();
-	printf(C5"     ####################      \n"); 
+	printf(C4" #########################     "); gpu();
+	printf(C4"  ##########################   "); disk();
+	printf(C4"   ########################    "); get_pkg_count();
+	printf(C5"    ######################     "); uptime(&now);
+	printf(C5"     ####################      "); curtime();
 	printf(C5"       #######   ######        \n"C0);
 	printf("                                 \n");
+}
+
+static void os(void) {
+	FILE *fp;
+	int status;
+	char path[PATH_MAX];
+	fp = popen("echo $(sw_vers -productName) $(sw_vers -productVersion) $(sw_vers -buildVersion)", "r");
+
+	while (fgets(path, PATH_MAX, fp) != NULL)
+		printf(RED"OS        : "NOR"%s", path);
+
+	status = pclose(fp);
 }
 
 static void kernel(void) {
@@ -381,6 +394,7 @@ int main(int argc, char **argv) {
 		curtime();
 		get_sysctl(MODEL);
 		get_sysctl(CPU);
+		os();
 		kernel();
 		disk();
 		mem();
