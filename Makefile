@@ -1,4 +1,4 @@
-CC ?= clang
+CC ?= gcc
 PREFIX ?= /opt/pkg
 
 VARBASE ?= ${PREFIX}/var
@@ -14,3 +14,4 @@ install:
 	install -pm 755 osxinfo ${DESTDIR}${PREFIX}/bin
 clean:
 	rm osxinfo
+	rm -rf osxinfo.dSYM/
